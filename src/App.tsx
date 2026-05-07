@@ -37,7 +37,7 @@ export default function App() {
 
   if (currentView === "menu") {
     return (
-      <div className="w-full flex flex-col items-center justify-center h-screen gap-20">
+      <div className="w-full flex flex-col items-center justify-center h-screen gap-5">
         <ParticlesBg/>
         <div className="w-2/3">
           <Card>
