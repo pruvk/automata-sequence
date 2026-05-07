@@ -21,7 +21,7 @@ export default function ParticlesBg() {
             className="fixed inset-0 -z-10"
             options={{
                 background: {
-                    color: { value: "transparent" },
+                    color: { value: "#F0F0F0" },
                 },
                 fpsLimit: 120,
                 interactivity: {

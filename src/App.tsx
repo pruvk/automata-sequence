@@ -5,10 +5,31 @@ import { Sigma } from "lucide-react"
 import ParticlesBg from "./components/particleBg"
 import { Label } from "radix-ui"
 import { Input } from "./components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
+} from "@/components/ui/field"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 
 
 export default function App() {
   const [currentView, setCurrentView] = useState<string>("menu")
+  const [showComponent, setShowComponent] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
   
   const sequences = [
   {
@@ -37,8 +58,9 @@ export default function App() {
 
   if (currentView === "menu") {
     return (
-      <div className="w-full flex flex-col items-center justify-center h-screen gap-20">
-        <ParticlesBg/>
+      <>
+      <ParticlesBg/>
+      <div className="w-full flex flex-col items-center justify-center h-screen gap-5">
         <div className="w-2/3">
           <Card>
             <CardHeader className="flex flex-col items-center">
@@ -68,7 +90,7 @@ export default function App() {
                 {item.recursion}
               </code>
             </CardContent>
-          <CardDescription className="flex flex-col gap-2 items-center">
+          <CardDescription className="flex flex-col gap-5 items-center">
             <div>
               {item.description}
             </div>
@@ -78,12 +100,13 @@ export default function App() {
           </CardDescription>
           </CardHeader>
           <CardFooter>
-            <Button className="w-full" onClick={() => setCurrentView(item.id)}>Solve now</Button>
+            <Button className="w-full" onClick={() => setCurrentView(item.id)}>Try me</Button>
           </CardFooter>
           </Card>
           )}
         </div>
       </div>
+    </> 
     )
   }  
   else {
@@ -91,25 +114,84 @@ export default function App() {
     const activeSequence = sequences.find((item) => item.id === currentView);
 
     return (
-      
+      <>
+      <ParticlesBg/>
       <div className="flex min-h-screen items-center justify-center p-4">
-        <ParticlesBg />
-        <Card className="w-full max-w-2xl">
-          <CardHeader>
-            <CardTitle className="capitalize">{currentView} Numbers</CardTitle>
+        <Card className="w-full max-w-xl flex">
+          <CardHeader className="flex flex-col items-center">
+            <CardTitle className="font-extrabold text-2xl">{activeSequence?.title}</CardTitle>
+            <div className="my-2 mx-5 flex items-center justify-center rounded-md bg-taupe-100 px-2 py-1.5 w-full">
+              <code className="font-medium">
+                {activeSequence?.recursion}
+              </code>
+            </div>
           </CardHeader>
+          <CardDescription className="flex flex-col gap-5 items-center">
+            <div>
+              {activeSequence?.description}
+            </div>
+            <div>
+              {activeSequence?.n}
+            </div>
+          </CardDescription>
           <CardContent>
-            <p>Sequence generator will go here...</p>
+            <div>
+              <form onSubmit={(e) => {e.preventDefault()}}>
+        <FieldGroup>
+          <FieldSet>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="">
+                  Number:
+                </FieldLabel>
+                <Input
+                  id=""
+                  placeholder="input your number here"
+                  required
+                  type="number"
+                  value={inputValue}
+                  onChange={(e) => {
+                  setInputValue(e.target.value)
+                  setShowComponent(false)
+                  }}
+                />
+              </Field>
+            </FieldGroup>
+          </FieldSet>
+          <Field orientation="vertical">
+            {
+              showComponent === true && (
+                <div>
+                  <FieldLegend>Answer</FieldLegend>
+                  <FieldDescription>
+                    Answer goes here
+                  </FieldDescription>
+                </div>
+              )
+            }
+            <Button 
+              type="submit"
+              onClick={() => {
+                if (inputValue !== "") setShowComponent(true)
+              }}
+            >
+              Submit
+            </Button>
             <Button 
               variant="outline" 
-              className="mt-6 text-black" 
+              className=" text-black" 
               onClick={() => setCurrentView("menu")}
-            >
-              Back to Main Menu
-            </Button>
+              >
+                Back to Main Menu
+              </Button>
+          </Field>
+        </FieldGroup>
+      </form>
+            </div>
           </CardContent>
         </Card>
       </div>
+    </>
     )
   }
 }
